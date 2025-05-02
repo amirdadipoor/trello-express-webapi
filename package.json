@@ -1,0 +1,21 @@
+{
+  "name": "trello-express-webapi",
+  "version": "1.0.0",
+  "description": "this project build for create trello app web api (Server Side App)",
+  "license": "ISC",
+  "author": "amd",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  }
+}
