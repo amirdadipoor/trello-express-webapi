@@ -22,21 +22,13 @@ let simpleList = [
     {id : 2 , name: "در حال انجام" , cards : [{id : 1 , name : "گزارش" } , {id : 2 , name : "کد نویسی"} , {id : 3 , name : "دیباگ"} , {id:4 , name : "دیپلوی"}]} ,
 ];
 
-// get all items
+// GET all lists
 app.get('/api/lists', (req, res) => {
     res.json(simpleList);
 })
 
-app.get('/api/v2/lists', async (req, res) => {
-    const itemList = await List.findAll({
-        include: {
-            model: Card
-        }
-    });
-    res.json(itemList);
-})
 
-// GET item by ID
+// GET list by ID
 app.get('/api/list/:id', (req, res) => {
     const item = simpleList.find(i => i.id === parseInt(req.params.id));
     if (!item) return res.status(404).send('Not found');
@@ -114,6 +106,63 @@ app.delete('/api/list/:list_id/card/:card_id', (req, res) => {
 
     res.json(simpleList).status(204).send();
 })
+
+// v2 api
+
+// GET all lists
+app.get('/api/v2/lists', async (req, res) => {
+    const itemList = await List.findAll({
+        include: {
+            model: Card
+        }
+    });
+    res.json(itemList);
+})
+
+// GET list by id
+app.get('/api/v2/lists/:id', async (req, res) => {
+    const list_id = parseInt(req.params.id);
+    const list = await List.findByPk(list_id , {
+        include: {
+            model: Card
+        }
+    })
+    if (!list) return res.status(404).send('Not found');
+    res.json(list);
+})
+
+// GET all cards of list
+app.get('/api/v2/lists/:id/cards', async (req, res) => {
+    const list_id = parseInt(req.params.id);
+    const list = await List.findByPk(list_id, {
+        include: Card
+    })
+    if (!list) return res.status(404).send('List Not found');
+    return res.json(list.Children);
+})
+
+// POST create new list
+app.post('/api/v2/lists', async (req, res) => {
+    const list = await List.create({ name: req.body.name });
+    res.status(201).json(list);
+})
+
+// POST create new card belongs to
+app.post('/api/v2/lists/:id/cards', async (req, res) => {
+    const list_id = parseInt(req.params.id);
+    const list = await List.findByPk(list_id)
+    if (!list) return res.status(404).send('List Not found');
+
+    //console.log(list);
+
+    const myCard = await Card.create({
+        name: req.body.name,
+        listId: list.id  // 🔗 Link card to list
+    });
+
+    res.status(201).json(myCard);
+})
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
