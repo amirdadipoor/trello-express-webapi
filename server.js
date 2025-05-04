@@ -1,7 +1,7 @@
 
 const express = require('express')
 const app = express()
-const port = 4070
+const port = 80
 const sequelize = require('./db');
 const List = require('./models/List');
 const Card = require('./models/Card');
@@ -122,23 +122,22 @@ app.get('/api/v2/lists', async (req, res) => {
 // GET list by id
 app.get('/api/v2/lists/:id', async (req, res) => {
     const list_id = parseInt(req.params.id);
-    const list = await List.findByPk(list_id , {
-        include: {
-            model: Card
-        }
-    })
-    if (!list) return res.status(404).send('Not found');
-    res.json(list);
+    const itemList = await List.findByPk(list_id);
+    if (!itemList) return res.status(404).send('Not found');
+    res.json(itemList);
 })
 
 // GET all cards of list
 app.get('/api/v2/lists/:id/cards', async (req, res) => {
     const list_id = parseInt(req.params.id);
     const list = await List.findByPk(list_id, {
-        include: Card
+        include: {
+            model: Card
+        }
+
     })
     if (!list) return res.status(404).send('List Not found');
-    return res.json(list.Children);
+    return res.json(list);
 })
 
 // POST create new list
