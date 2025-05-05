@@ -7,8 +7,19 @@ const Card = sequelize.define('Card', {
 })
 
 // Association: Card belongs to List
-Card.belongsTo(List, { foreignKey: 'listId' });
-List.hasMany(Card, { foreignKey: 'listId' });
+Card.belongsTo(List, {
+    foreignKey: {
+        name : 'listId' ,
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+List.hasMany(Card, {
+    foreignKey: {
+        name: 'listId',
+        allowNull: false
+    }
+});
 
 
 module.exports = Card;

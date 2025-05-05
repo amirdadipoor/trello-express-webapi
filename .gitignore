@@ -2,3 +2,16 @@
 .vscode
 node_modules
 database.db
+
+
+# Prisma artifacts
+.prisma/
+*.log
+
+# SQLite database
+prisma/dev.db
+prisma/dev.db-journal
+
+# OS-specific files
+.DS_Store
+Thumbs.db

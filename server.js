@@ -9,7 +9,7 @@ const Card = require('./models/Card');
 
 
 // Sync all models
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ force: false, alter: true }).then(() => {
     console.log('All tables created and relationships established!');
 });
 
@@ -122,7 +122,11 @@ app.get('/api/v2/lists', async (req, res) => {
 // GET list by id
 app.get('/api/v2/lists/:id', async (req, res) => {
     const list_id = parseInt(req.params.id);
-    const itemList = await List.findByPk(list_id);
+    const itemList = await List.findByPk(list_id, {
+        include: {
+            model: Card
+        }
+    });
     if (!itemList) return res.status(404).send('Not found');
     res.json(itemList);
 })
