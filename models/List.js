@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../old-db');
 
 const List = sequelize.define('List', {
     name: {

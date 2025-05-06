@@ -6,11 +6,12 @@ database.db
 
 # Prisma artifacts
 .prisma/
+generated/prisma/
 *.log
 
 # SQLite database
-prisma/dev.db
-prisma/dev.db-journal
+prisma/database.db
+prisma/database.db-journal
 
 # OS-specific files
 .DS_Store

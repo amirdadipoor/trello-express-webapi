@@ -14,7 +14,7 @@ datasource db {
 model List {
     id      Int     @id @default(autoincrement())
     name    String
-    Cards   Card[]
+    cards   Card[]
 }
 
 model Card {

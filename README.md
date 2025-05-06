@@ -39,4 +39,18 @@ npx prisma migrate dev --name init
 
 # Start the server
 node index.js
+
+
+# init yr project
+npm init -y
+npm install prisma --save-dev
+npx prisma
+npx prisma init --datasource-provider sqlite --output ../generated/prisma
+
+DATABASE_URL="file:./dev.db"
+
+npx prisma migrate dev --name init
+npm install @prisma/client
+npx prisma generate
+
 ```
