@@ -4,7 +4,7 @@
   "description": "this project build for create trello app web api (Server Side App)",
   "license": "ISC",
   "author": "amd",
-  "main": "old-server.js",
+  "main": "old/old-server.js",
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
