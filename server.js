@@ -121,24 +121,141 @@ app.post('/api/v3/lists/:id/cards', async (req, res) => {
     }
 });
 
+app.patch('/api/v3/lists/:id' ,  async (req, res) => {
+    try {
+        const list_id = parseInt(req.params.id);
+        const name = req.body.name
 
-/*app.get('/items/:id/children', async (req, res) => {
-    const children = await prisma.child.findMany({
-        where: { itemId: parseInt(req.params.id) },
-        include: {
-            subchildren: true
-        }
-    });
-    res.json(children);
-});
 
-// POST Create an item
-app.post('/items', async (req, res) => {
-    const item = await prisma.item.create({
-        data: { name: req.body.name }
-    });
-    res.json(item);
-});*/
+        const myList = await prisma.list.findUnique(
+            {
+                where: { id: list_id },
+            });
+        if (!myList) return res.status(404).send('Not found');
+
+        const updatedList = await prisma.list.update({
+            where : {
+                id : list_id
+            },
+            data : {
+                name
+            }
+        })
+
+        res.json(updatedList);
+    } catch (err) {
+        res.status(500).send('Error fetching lists');
+    }
+})
+app.patch('/api/v3/lists/:id/cards/:card_id' ,  async (req, res) => {
+    try {
+        const list_id = parseInt(req.params.id);
+        const cardId = parseInt(req.params.card_id);
+        const newName = req.body.name
+
+
+        const myCard = await prisma.card.findUnique(
+            {
+                where: { id: cardId , listId : list_id },
+            });
+        if (!myCard) return res.status(404).send('Not found');
+
+        const updatedCard = await prisma.card.update(
+            {
+                where: {
+                    id: cardId ,
+                    listId : list_id
+                }, data : {
+                    name : newName
+                }
+            });
+
+        // const result = await prisma.$executeRaw`UPDATE Card SET name = ${newName} WHERE id = ${cardId} AND listId = ${list_id}`;
+
+        res.json(updatedCard);
+
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
+
+
+app.delete('/api/v3/lists/:id' ,  async (req, res) => {
+
+    try {
+        const list_id = parseInt(req.params.id);
+
+        const myList = await prisma.list.findUnique(
+            {
+                where: { id: list_id },
+            });
+        if (!myList) return res.status(404).send('Not found');
+        const deletedList = await prisma.list.delete({
+            where: {
+                id: list_id,
+            }
+        });
+        res.json(deletedList);
+    } catch (err) {
+        res.status(500).send('Error fetching lists');
+    }
+})
+
+app.delete('/api/v3/lists/:id/cards/:card_id' ,  async (req, res) => {
+    try {
+        const list_id = parseInt(req.params.id);
+        const cardId = parseInt(req.params.card_id);
+
+
+
+        const myCard = await prisma.card.findUnique(
+            {
+                where: { id: cardId , listId : list_id },
+            });
+        if (!myCard) return res.status(404).send('Not found');
+
+        const deletedCard = await prisma.card.delete(
+            {
+                where: {
+                    id: cardId ,
+                    listId : list_id
+                }
+            });
+
+        res.json(deletedCard);
+
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
+
+app.delete('/api/v3/cards/:id/' ,  async (req, res) => {
+    try {
+
+        const cardId = parseInt(req.params.id);
+
+
+
+        const myCard = await prisma.card.findUnique(
+            {
+                where: { id: cardId , listId : list_id },
+            });
+        if (!myCard) return res.status(404).send('Not found');
+
+        const deletedCard = await prisma.card.delete(
+            {
+                where: {
+                    id: cardId ,
+                }
+            });
+
+        res.json(deletedCard);
+
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
+
 
 
 app.listen(PORT, () => {
