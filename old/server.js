@@ -1,5 +1,5 @@
 const express = require('express')
-const prisma = require('./db');
+const prisma = require('../db');
 const app = express()
 const PORT = process.env.PORT || 80;
 
