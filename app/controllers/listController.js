@@ -21,18 +21,35 @@ exports.createList = async (req , res) => {
 
 exports.getListById = async (req , res) => {
     try {
-        const data = { id: req.params.id };
-        //const itemList = await
-        if (!itemList) return res.status(404).send({error: 'Failed to find list.' });
+        const id = parseInt(req.params.id)
+        const itemList = await listActions.getListById(id)
+        if (!itemList) return res.status(404).json({error: 'Failed to find list.' });
+        res.json(itemList);
     } catch (error) {
         res.status(500).json({error: 'Failed to create list.' });
     }
 }
 
-exports.updateList = (req , req) => {
+exports.updateList = async (req , req) => {
+    try {
+        const id = parseInt(req.params.id)
+        const data = {name : req.body.name};
+        const result = await listActions.updateList(id , data);
+        if (!result) return res.status(404).json({error: 'Failed to update list.' });
 
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({error: 'Failed to create list.' });
+    }
 }
 
-exports.deleteList = (req , res) => {
-
+exports.deleteList = async (req , res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const result = await listActions.deleteList(id);
+        if (!result) return res.status(404).json({error: 'Failed to delete list.' });
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({error: 'Failed to create list.' });
+    }
 }

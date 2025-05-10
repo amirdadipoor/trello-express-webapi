@@ -24,5 +24,33 @@ export const getListById = async (id) => {
             }
         });
     return itemList;
+}
 
+export const updateList = async (id , data) => {
+    const myList = await prisma.list.findUnique(
+    {
+        where: { id },
+    });
+    if(!myList) return myList;
+    const updatedList = await prisma.list.update({
+        where : {
+            id
+        },
+        data
+    })
+    return updatedList;
+}
+
+export const deleteList = async (id) => {
+    const myList = await prisma.list.findUnique(
+        {
+            where: { id },
+        });
+    if(!myList) return myList;
+    const deletedList = await prisma.list.delete({
+        where: {
+            id,
+        }
+    });
+    return deletedList;
 }
