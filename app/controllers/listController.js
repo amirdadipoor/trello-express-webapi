@@ -30,7 +30,7 @@ exports.getListById = async (req , res) => {
     }
 }
 
-exports.updateList = async (req , req) => {
+exports.updateList = async (req , res) => {
     try {
         const id = parseInt(req.params.id)
         const data = {name : req.body.name};

@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const cardController = require('./../app/controllers/cardController');
 
 // GET get all cards
-router.get('/' , cardController.getAllCards);
+router.get('/' , cardController.getAllCardsByListId);
 
 // GET get card by id
 router.get('/:card_id', cardController.getCardById);
