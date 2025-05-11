@@ -13,6 +13,7 @@ exports.createList = async (data) => {
     const list = await prisma.list.create({
         data
     });
+    return list;
 }
 
 exports.getListById = async (id) => {
