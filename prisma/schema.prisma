@@ -20,6 +20,7 @@ model List {
 model Card {
     id     Int     @id @default(autoincrement())
     name    String
+    row     Int     @default(0)
     listId  Int
     list    List    @relation(fields: [listId], references: [id], onDelete: Cascade)
 }

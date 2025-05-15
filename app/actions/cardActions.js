@@ -6,7 +6,10 @@ exports.fetchAllCardsOfList = async (id) => {
             where: { id },
             include: {
                 cards : true
-            }
+            },
+            orderBy: {
+                row : 'asc'
+            },
         });
     if (!myList) return myList;
 
@@ -28,7 +31,7 @@ exports.createCardForList = async (id , data) => {
 
 }
 
-exports.updateCardOfList = async (listId , cardId , cardName) => {
+exports.updateCardOfList = async (listId , cardId , data) => {
     const myCard = await prisma.card.findUnique(
         {
             where: { id: cardId , listId },
@@ -40,9 +43,7 @@ exports.updateCardOfList = async (listId , cardId , cardName) => {
             where: {
                 id: cardId ,
                 listId
-            }, data : {
-                name : cardName
-            }
+            }, data
         });
 
     return updatedCard

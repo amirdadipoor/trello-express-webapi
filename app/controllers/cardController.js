@@ -8,6 +8,7 @@ exports.getAllCardsByListId = async (req , res) => {
         res.json(myCards);
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({error: 'Failed to retrieve cards.' });
     }
 }
@@ -19,7 +20,7 @@ exports.getCardById = (req , res) => {
 exports.createCard = async (req , res) => {
     try {
         const id = parseInt(req.params.id);
-        const data = {name: req.body.name , listId : id }
+        const data = {name: req.body.name , row : req.body.row , listId : id }
         const myCard = await cardActions.createCardForList(id , data);
         if(!myCard) res.status(404).json({error: 'Failed to find card.'});
         else res.json(myCard);
@@ -33,9 +34,10 @@ exports.updateCard = async (req , res) => {
     try {
         const listId = parseInt(req.params.id);
         const cardId = parseInt(req.params.card_id);
-        const cardName = req.body.name
+        const data = {name : req.body.name , row : req.body.row }
 
-        const updatedCard = await cardActions.updateCardOfList(listId,cardId,cardName);
+
+        const updatedCard = await cardActions.updateCardOfList(listId,cardId,data);
         if(!updatedCard) res.status(404).json({error: 'Failed to update card.'});
         else res.json(updatedCard);
 
