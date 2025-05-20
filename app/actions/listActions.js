@@ -2,8 +2,15 @@ const prisma = require('./../../db');
 
 exports.fetchAllLists = async () => {
     const itemLists = await prisma.list.findMany({
+        orderBy: {
+            id: 'asc',
+        },
         include: {
-            cards : true
+            cards : {
+                orderBy: {
+                    row: 'asc',
+                },
+            }
         }
     })
     return itemLists;
@@ -21,7 +28,11 @@ exports.getListById = async (id) => {
         {
             where: { id: id },
             include: {
-                cards : true
+                cards : {
+                    orderBy: {
+                        row: 'asc',
+                    },
+                }
             }
         });
     return itemList;
