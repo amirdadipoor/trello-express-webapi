@@ -34,7 +34,7 @@ exports.updateCard = async (req , res) => {
     try {
         const listId = parseInt(req.params.id);
         const cardId = parseInt(req.params.card_id);
-        const data = {name : req.body.name , row : req.body.row }
+        const data = req.body; /*{name : req.body.name , row : req.body.row }*/
 
 
         const updatedCard = await cardActions.updateCardOfList(listId,cardId,data);
